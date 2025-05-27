@@ -56,6 +56,72 @@ After hitting a url we can see a data in our ui. Request can come from web brows
 - We will send `request` to server from client side using some `methods` like `GET`, `DELETE`, `PUT`, `PATCH`, `POST`.
 - Request holds some `request headers` like `HOST: www.sazid.com`, `Accept-Encoding : gzip, deflate, br, zstd`, `Cookies`
 - When we want to create update a data or create a data we have to give the data inside the `Request Body`
-- after tHE HTTP Request the server will give us a `response` with `status code`, `message`.
+- after the HTTP Request the server will give us a `response` with `status code`, `message`.
 - Response also holds a `response header` response header hold the `Access-Control-Allow-Credentials: true` `Content-Type :text/plain`.
 - Response body shows the the data we have asked for after http request.
+
+## 12-2 Frontend vs Backend Development
+
+### lets understand Wast is frontend
+
+- Normally We work with UI and this is frontend development
+- Client/browser is needed for frontend
+- frontend ui can be built on different technologies like angular, vue or react/next.js
+- No matter what we use for building ui ultimately converted to HTML, CSS AND JS since browser only understand these
+
+### lets understand Wast is backend
+
+- when the work is building logic, playing with data, calculation or computational related works.
+- Server is required for backend development
+- In backend we can use different languages like php, rails python,java,js.
+- We are not running the backend in browser, we can think like that backend itself is a computer and can run any language.
+- Now a days we can use `node.js` as backend, Its javascript runtime now.
+- js was made for frontend or browser related works. This was not made to write backend code. This lacking was filled by node.js run time. now we can wite backend code using js as well.
+- Node.js is not a programming language. Js is a programming language and node.js(js run time) made a way for js to write code for backend.
+- Other language like php, rails python,java these are self sufficient so that they do not need any others help to be able to be used for writing backend code.
+
+  ![alt text](<WhatsApp Image 2025-05-27 at 21.54.00_9799f3bd.jpg>)
+
+- Data are kept in backend as files. after a request to server server takes the files from backend and deliver to frontend.
+- Other option is server can communicate with our database and serves processed data from database after a successful request. this is why backend is called an application.
+
+### Two Types of Scenario Can Happen
+
+#### Static Website
+
+- In Previous day we used to store html, css js files like image videos were stored in backend `server`.
+- Inside the backend server we were used to create a page and the copy of the page was used be sent to frontend.
+- Frontend used to show the copy of the page created in backend like pre made food.
+
+#### Dynamic Website
+
+- Here pages are not pre made in server.
+- In case of Dynamic Website when a request comes from client side, All the required data comes from `Database`.
+- Required data comes to server from database.
+
+- Then the server uses some templates like `HBS`, `PUG`, `EJS` (These are Template engine for making page) to build the page using the data came from database and then the page is sent to browser using server and shown to frontend. **This is Called Server side Rendering(SSR)**
+
+![alt text](<WhatsApp Image 2025-05-27 at 22.56.15_a7bd8cd8.jpg>)
+![alt text](<WhatsApp Image 2025-05-27 at 22.57.31_b0475654.jpg>)
+
+**Now Lets See Client side Rendering(CSR) in dynamic Website**
+
+- Another method is we can see the data in frontend using api.
+- when request comes from client side then server will request the data from database and gets the data
+- Then server modifies the data according to our requirement and send to browser
+- Remember that here browser is just getting the raw data i mean no html css and js and others like images, browser is just getting the json data.
+- Now the Browser is building the site using the data and the html css coming from frontend technology.
+- The page can be build using any kind of frontend library like react, vue, angular etc.
+
+![alt text](<WhatsApp Image 2025-05-27 at 23.04.09_0d8e708f.jpg>)
+
+#### What are the benefits of Using API?
+
+- When json data is coming from backend to frontend then it will support `CROSS` Device or platform.
+- Can be seen in mobile browser UI, Desktop Browser UI, Desktop application or Mobile application.
+- On the other hand the static website is like we have to make it for each and every device and platform. this is a hassle. So, east or west dynamic is the best.
+
+![alt text](<WhatsApp Image 2025-05-27 at 23.30.38_4bbf945f.jpg>)
+
+- Moreover API built site is also better than the server side rendering since if we use template engine to make page they should be made different for each app and each platform as well and this is time consuming our time to build a site.
+- The best solution is use api and build in browser side using frontend library so that each and every device can access.
