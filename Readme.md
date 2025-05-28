@@ -319,9 +319,76 @@ It is a the heart of Node.js which makes the asynchronous programming possible i
 - The non blocking behavior is called non blocking I/O.
 - The tasks were performed in asynchronous manner since we just have one thread. if it works in blocking manner that will be a problem so, synchronous operation is not possible like multi threaded server.
 - Event loop is always looking for the I/O operations. if found any it sends to thread pool. This is helping us to accept multiple request
-- **There is a Strict rule that If there is any CPU INTENSIVE TASK It should must be performed inside teh single thread not in the thread pool. This create a problem each and any request coming after the CPU INTENSIVE TASK have to wait until the CPU INTENSIVE TASK is Finished.** This is why Node.js is not suitable for cpu intensive task. It is mainly Used For I/O INTENSIVE TASK.
+- **There is a rule that If there is any CPU INTENSIVE TASK It should must be performed inside teh single thread not in the thread pool. This create a problem each and any request coming after the CPU INTENSIVE TASK have to wait until the CPU INTENSIVE TASK is Finished.** This is why Node.js is not suitable for cpu intensive task. It is mainly Used For I/O INTENSIVE TASK.
 
 ![alt text](<WhatsApp Image 2025-05-28 at 15.25.46_09228d16.jpg>)
 
 - If we can bring multi threading we can solve the problem and perform cpu intensive task.
-- The main magic is **Thread Pool** and **Event Loop**
+- The main magic is **Thread Pool** and **Event Loop** which handles the thread pool.
+
+| Task Type                        | Where it Runs by Default        | Can Be Offloaded?               |
+| -------------------------------- | ------------------------------- | ------------------------------- |
+| Your own CPU-heavy JS code       | 🚫 Main thread (event loop)     | ✅ Yes, with `worker_threads`   |
+| Built-in async APIs (fs, crypto) | ✅ Thread pool (worker threads) | ✅ Already offloaded internally |
+
+## 12-6 How event loop works
+
+- Node.js is a single threaded run time.
+- Node.js contains a singe thread and side by sid it is containing a thread pool.
+- I/O intensive tasks are going to thread pool from the single thread.
+- When the task is complete the data comes to single thread and then from here to browser.
+
+These total works are handled by event loop. event loop maintains a event driven architecture.
+
+- When a event will happen the event event loop will observe and transfer the task to the thread pool and then after the task completion event loop will send the response to the single thread through a callback Function.
+
+- There is process of happening the work done inside event loop.
+
+| Task Type                      | Uses Thread Pool?  | Why?                                      |
+| ------------------------------ | ------------------ | ----------------------------------------- |
+| `fs.readFile`, `crypto.pbkdf2` | ✅ Yes             | Offloaded to avoid blocking main thread   |
+| `setTimeout`, Promises         | ❌ No              | Handled by event loop directly            |
+| HTTP / TCP networking          | ❌ No              | Non-blocking I/O via OS, no thread needed |
+| Custom CPU-heavy JS code       | ❌ No (by default) | Can use `worker_threads` manually         |
+
+#### Now lets under stand the process sof event loop.
+
+- When the node.js is running event loop is constantly running and looking for task so that it can transfer the task to thread pool.
+
+#### How Event Loop works?
+
+Basically event loop works in 4 phases.
+
+1. When a process starts event loop starts.
+2. While event loop running a `Callback Queues` is created. This is the most important queue. Rather than this there are a lot of ques. inside the `Callback Queues` the whole process of event loop starts.
+
+![alt text](<WhatsApp Image 2025-05-28 at 19.48.05_9cdddb72.jpg>)
+
+1. After starting it will search that if there is any `Expired Timer Callback` function or not. That means if there is any `SetTimeout()` function exist. This is first priority and then it will execute the function then others.
+
+![alt text](<WhatsApp Image 2025-05-28 at 19.48.53_b69dd9d2.jpg>)
+
+1. The next phase is `I/O Polling Callback`. Here the I/O Intensive operations will be executed.Like reading any data from a file system.
+
+![alt text](<WhatsApp Image 2025-05-28 at 19.52.46_a730e2be.jpg>)
+
+1. The next phase is it will search for `setImmediate() callback` function will operate it if exist.
+
+![alt text](<WhatsApp Image 2025-05-28 at 19.53.50_81392832.jpg>)
+
+1. The next phase is It will `Close Callback` functions those are responsible for closing the loop. and responses through callback function.
+
+All the steps are happening inside callback ques.
+
+- Rather than the callback Ques we have more two types of callback queues
+
+1. `process.nextTick()` Queue
+2. `Other Microstask` Queue
+
+- These queues function will be executed in between the main phases of callback ques.
+
+![alt text](<WhatsApp Image 2025-05-28 at 19.57.45_79b6572e.jpg>)
+
+- If we want to work in depth higher level of works we have to know the phases.
+
+![alt text](<WhatsApp Image 2025-05-28 at 19.59.21_02718ca9.jpg>)
