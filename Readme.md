@@ -69,7 +69,7 @@ After hitting a url we can see a data in our ui. Request can come from web brows
 - frontend ui can be built on different technologies like angular, vue or react/next.js
 - No matter what we use for building ui ultimately converted to HTML, CSS AND JS since browser only understand these
 
-### lets understand Wast is backend
+### Lets understand What is backend
 
 - when the work is building logic, playing with data, calculation or computational related works.
 - Server is required for backend development
@@ -156,7 +156,7 @@ After hitting a url we can see a data in our ui. Request can come from web brows
 - Node.js was made based on c++ and v8 engine.
 - We can not write raw js without using node.js in server since js only gets the browser dom access where other language gets the full computer access like file system, networking and all. these gaps are filled by node.js
 
-#### why Node.js is popular?
+#### Why Node.js is popular?
 
 1. We can use js on server side.
 2. Build Highly Scalable backend application.
@@ -193,3 +193,89 @@ After hitting a url we can see a data in our ui. Request can come from web brows
 
 - node.js is combination of v8 engine and Libuv. arther than these node.js has http-parser, c-areas, zlib, openssl.
 - We will write pure js code and then the node.js will make it run in server.
+
+## 12-4 High Level Overview of Node.js Architecture
+
+#### Event Driven Architecture
+
+Node.js core modules each are events
+
+[Node.js Events API](https://nodejs.org/docs/latest/api/events.html)
+
+- Flow : Cousin sent to shop to buy a chips. he will come back and call me that "vaiyya chips ansi"
+- Event Emitter is like different kind of http request or any client side request. These requests are listened by node.js using event listener.
+- Event Emitter(special type of instance object ) -->Event Listener --> CallaBack.
+- The thing happening here is emitter will be emitting and event listener will listen and call the callback
+- Callback function is a response against the event.
+
+![alt text](<WhatsApp Image 2025-05-28 at 10.23.32_aa142717.jpg>)
+
+- This total work is handled in node.js using `event loop` which is the heart of the Node.js which makes the asynchronous programming possible in Node.js. Most of the tasks of node js are handled by event loop.
+
+#### Before Understanding the event Loop lets understand two things.
+
+1. **Process :**
+
+   - Program : A program Contains a set of instructions
+   - Disk : The program is written inside a disk.
+   - Ram: When we want to run the program we have to load this in RAM. Ram prepares then program for running. and this is called process.
+
+   ![alt text](<WhatsApp Image 2025-05-28 at 11.36.44_c8d744a3.jpg>)
+
+   - Initially the process is just some set of instructions which are not executable. To run the program the instructions must have to come to an environment or situation and this is called process and this happens in our ram.
+   - Process needs resources to run.
+   - Primary resources is ram, and other resources are CPU, GPU, I/O and all these are controlled by operation systems
+
+   ![alt text](<WhatsApp Image 2025-05-28 at 11.42.48_c5910ca3.jpg>)
+
+   - Process holds more things like `Processor Register`, `Program Counter`, `Stack Counter`, `Memory`.
+   - Binding these resources a process is building.
+
+   ![alt text](<WhatsApp Image 2025-05-28 at 11.46.33_fa90d7f3.jpg>)
+
+   - There might be multiple processes each build using `Code`, `Data`, `Stack`, `Heap`
+   - The processes's environments are different from others.
+   - Ram Runs the processes separately.
+
+2. **Threads :**
+
+- Threads are unite of executions
+- Suppose we want to execute the process in our ram. The process do not execute at a time. The process is executed unit by unit.
+- Each and every units are called threads.
+
+![alt text](<WhatsApp Image 2025-05-28 at 12.32.18_a327b733.jpg>)
+
+- Thread Contains `Stack`, `Register`, `Program Counter`
+- Thread can be single threaded or multi threaded.
+
+#### Now Lets Understand the Node.js Run time Process
+
+- **Node.js Runtime itself is a process** since node.js is giving js the power of running js code in server. or we can say making an environment. and we can access process variable
+- Node.js is a **Single Threaded Run Time**. This means it will execute one unite at a time and one by one it will execute others.
+- First of all the `Program File Initialization` is done.
+- Then `Top Level Code Execution` is done of my program (Codes that are out of main Functions).
+- `Require Module` is done the. This means To run my code which modules or codes are required it will be imported.
+- `Register Callback Events` this means the events or callback based on those we will get response those will be registered for execution. remember the execution will not be done her one the registration of the cal back functions will be done here.
+- Finally The event loops will be running and the callback functions will start to execute.
+- While any heavy tasks is found the event loop transfers the heavy tasks to thread pool.
+- Thread pool contains a lot of worker threads.a nd these worker threads do the heavy computational tasks and in return he inform the event loop that the work has been done.
+- Then the event loop shows the task result.
+
+#### Event Loop works
+
+It is a the heart of Node.js which makes the asynchronous programming possible in node.js
+
+1. Most task of node.js happens in Event Loop. only heavy tasks are sent to thread pool.
+2. Received events and execute callback associated with each callback function
+3. Offloads CPU Intensive tasks.
+
+- Suppose 1st user is requiring data -> **single threaded event loop will give the data directly**
+- Second user wants to read file (synchronously - this is not possible have to be asynchronous to make thread pool work ) -> **This is a heavy task so 3rd and 4th user works will be locked. this is a problem. and the problem is solved thread pool** after using the thread pool third and 4th person work is not blocking its happening in parallel while threadpool working with 2nd person work
+- Third person want to do a query
+- 4th user is requiring data
+
+![alt text](<WhatsApp Image 2025-05-28 at 13.18.46_26613076.jpg>)
+
+- This is how event driven architecture and this is how being a single threaded the node.js works asynchronously perform different tasks
+
+## 12-5 Single threaded node.js
