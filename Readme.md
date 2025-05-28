@@ -270,7 +270,7 @@ It is a the heart of Node.js which makes the asynchronous programming possible i
 3. Offloads CPU Intensive tasks.
 
 - Suppose 1st user is requiring data -> **single threaded event loop will give the data directly**
-- Second user wants to read file (synchronously - this is not possible have to be asynchronous to make thread pool work ) -> **This is a heavy task so 3rd and 4th user works will be locked. this is a problem. and the problem is solved thread pool** after using the thread pool third and 4th person work is not blocking its happening in parallel while threadpool working with 2nd person work
+- Second user wants to read file (synchronously - this is not possible have to be asynchronous to make thread pool work ) -> **This is a heavy task so 3rd and 4th user works will be locked. this is a problem. and the problem is solved thread pool** after using the thread pool third and 4th person work is not blocking its happening in parallel while thread pool working with 2nd person work
 - Third person want to do a query
 - 4th user is requiring data
 
@@ -279,3 +279,49 @@ It is a the heart of Node.js which makes the asynchronous programming possible i
 - This is how event driven architecture and this is how being a single threaded the node.js works asynchronously perform different tasks
 
 ## 12-5 Single threaded node.js
+
+#### Single Threaded Server Vs Multi Threaded Server
+
+- We used to keep server and client in one place. Html css js all are used to keep in server.
+- In modern days application we keep the server completely separate from client.
+- As we are keeping the server separate we are getting compatibility like it will support Cross device. data will be safe for all device and platform.
+
+![alt text](<WhatsApp Image 2025-05-28 at 13.37.16_9870bd89.jpg>)
+
+##### Server can have two type of task
+
+1. **I/O Intensive Task :** It like we request something and get something
+2. **CPU Intensive Task :** Heavy Calculations are done here.
+
+##### Multi Threaded
+
+- In previous days the languages used for server most of the cases were multi threaded and servers were also multi threaded.
+- Multi threaded server can perform different tasks at a time in parallel. one task do not stop for another each and evry works independently.
+
+![alt text](<WhatsApp Image 2025-05-28 at 14.53.12_4afed6ed.jpg>)
+
+##### Multi Threaded Server has some limitations
+
+- Suppose our server has 10 thread. it can handle 10 tasks operation at a time but when the there comes 11th task or more it cant handle after 10 since it has 10 threated. 1th no task have to wait until any thread gets free.
+
+- to solve the limitations of multi thread we could use two methods
+  1. **Horizontal Scaling :** : This means we could create instance from the server and set multiple server. By increasing the server number we could increase the number of threads.
+  2. **Vertical Scaling :**I can upgrade cpu ram to upgrade server power or we can say increasing the core. By increasing the core we can increase the thread number.
+
+![alt text](<WhatsApp Image 2025-05-28 at 15.05.18_7df7a867.jpg>)
+
+- These are increasing the thread but costing more since we have to create server we need more cpu and more.
+
+#### **Node.js** Come here with a magic of **handling multiple request** despite being a single threaded.
+
+- One thread means at a time it can perform one operation. this is a problem right? another client has to wait until first operation is completed.
+- BOOOM !! Node.js gives us a Magic named Worker pool/thread. When I/O operation comes server send the task to thread pool and the operation will be going on in thread pool. worker threads of thread pool does all the works and then sends to them who has requested. if another requests comes in parallel time it do do not have to wait because it will be sent to thread pool and the co worker will be doing the tasks in parallel. after performing the task thread pool lets the server know that the task is done.
+- The non blocking behavior is called non blocking I/O.
+- The tasks were performed in asynchronous manner since we just have one thread. if it works in blocking manner that will be a problem so, synchronous operation is not possible like multi threaded server.
+- Event loop is always looking for the I/O operations. if found any it sends to thread pool. This is helping us to accept multiple request
+- **There is a Strict rule that If there is any CPU INTENSIVE TASK It should must be performed inside teh single thread not in the thread pool. This create a problem each and any request coming after the CPU INTENSIVE TASK have to wait until the CPU INTENSIVE TASK is Finished.** This is why Node.js is not suitable for cpu intensive task. It is mainly Used For I/O INTENSIVE TASK.
+
+![alt text](<WhatsApp Image 2025-05-28 at 15.25.46_09228d16.jpg>)
+
+- If we can bring multi threading we can solve the problem and perform cpu intensive task.
+- The main magic is **Thread Pool** and **Event Loop**
