@@ -125,3 +125,71 @@ After hitting a url we can see a data in our ui. Request can come from web brows
 
 - Moreover API built site is also better than the server side rendering since if we use template engine to make page they should be made different for each app and each platform as well and this is time consuming our time to build a site.
 - The best solution is use api and build in browser side using frontend library so that each and every device can access.
+
+## 12-3 Why Node.js was invented
+
+- HTML Gave us the structure of a website, CSS gave us the styling and JS made the website interactive.
+- js runs in our browser using js engines like
+  1. chrome ---> V8 Engine (Best Performance)
+  2. Firefox ---> Spider Monkey
+  3. Safari ---> JavascriptCore
+
+#### Now Lets See How Js Works
+
+- When we write a js code it is converted to a `Abstract Syntax Tree` Using a `Parser`.
+- The Tree is interpreted (what is written we understand) using a `Interpreter`.
+- Then the code is compiled using a compiler. This compiler is called Just in time compiler. Using the compiler we see the output.
+
+![alt text](<WhatsApp Image 2025-05-28 at 08.59.05_07dc7a66.jpg>)
+
+#### Now Lets See How is Js Under Th Hood.
+
+- We have `call stack` where the functions are kept
+- We have `Heap` where is memory management is done
+- Then we have `Web Api`, `Dom` , `Fetch API`, `Callback Que (timers, click events)`
+
+![alt text](<WhatsApp Image 2025-05-28 at 09.02.34_7604a37b.jpg>)
+
+- We know js only runs in browser, we can not write js in server.
+- Then people came up with an idea that lets make Js Universal. I mean they have made node js that helps us to write js in server.
+- Node,js is basically a js run time that helps to run js in server.
+- Node.js was made based on c++ and v8 engine.
+- We can not write raw js without using node.js in server since js only gets the browser dom access where other language gets the full computer access like file system, networking and all. these gaps are filled by node.js
+
+#### why Node.js is popular?
+
+1. We can use js on server side.
+2. Build Highly Scalable backend application.
+3. It is single threaded, event driven and works on non blocking i/o.
+4. Perfect for building data intensive streaming application.
+
+#### Cons Of Node.js
+
+- It can not perform Highly CPU Intensive tasks
+- But now a days we can do highly cpu intensive tasks using worker threads.
+
+#### Dependencies of Node.js
+
+1. **V8 Engine :** Node.js runtime is based on v8 engine written in c++ and js. without v8 engine node js would never understand js code. Its most important dependency of node.js
+2. **Libuv :** It is a open source library written on c++ which focuses on `asynchronous I/O` and gives node access to `COMPUTER OS`, `FILE SYSTEM`, `NETWORKING` etc.
+
+#### **Libuv** Has two important parts
+
+- **Event loop :**
+
+  1. executes callback functions,
+  2. Network I/o
+
+- **Thread Pool :**
+
+  1. Cpu Intensive tasks,
+  2. File Access,
+  3. File Compression,
+  4. Cryptography
+
+- Node.js transfers the intensive tasks to thread pool so that it takes less memory to make a task done.
+
+#### Overall
+
+- node.js is combination of v8 engine and Libuv. arther than these node.js has http-parser, c-areas, zlib, openssl.
+- We will write pure js code and then the node.js will make it run in server.
