@@ -537,7 +537,64 @@ fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
    ```
 
 8. **Verify the Node version**:
-   ```
+   ````
    node -v
-   ```
-   This should now display the correct version.
+   ```If node is unrecognizable then do the following:
+   notepad $PROFILE
+   ````
+
+If node is unrecognizable then do the following:
+`notepad $PROFILE`
+
+- It will open a notepad or ask to create one. In the notepad, add the following line
+  `` Invoke-Expression (($fnmEnv = & fnm env) -join "`n") ``
+- Then press ctrl + S (or manually save it) and close the notepad. Close the Powershell as well.
+- Open powershell again and run node -v. It'd work.
+
+## Modular System Of Node.js
+
+- We build the structure of a website using HTML
+- We use Css to Beautify Our Website
+- Js is used for Interactivity of the website.
+
+* If we declare anything using var this will be set in window scope. and further we can access the variable or function from the window object.
+* If we declare anything using let this will be in block scope.
+
+![alt text](<WhatsApp Image 2025-05-28 at 21.53.51_e43dd5c2.jpg>)
+
+- When the project is big we can use multiple js files to do works
+
+#### Lets Think of a case
+
+- Suppose we have two js file and each file has same variable name like `let a = 10` and `let a = 20`.
+- This will create a conflict since ultimately the js will be used in HTMl CSS In Browser.
+
+![alt text](<WhatsApp Image 2025-05-28 at 22.15.35_d8e7b8fb.jpg>)
+
+- This Problem can be solved by taking the variables to function scope from global scope. To take in the function method we can use **IIFE** Method.
+- **IIFE** means Immediately Invoked Function Expression. This means we will write a function and wrap with first bracket and immediately calling the function.
+
+![alt text](<WhatsApp Image 2025-05-28 at 22.52.11_d7e51749.jpg>)
+
+- After doing the IIFE method the same named variable became function scoped and saved from happening conflict of having same name.
+- **If the code base is large this is not possible to make all the codes IIFE** this is th problem of IIFE.
+- For This issue of IIFE We can choose **Modular System**.
+
+#### **Modular System Of Node.js**
+
+- Module Means a chunk of codes which is not aware of outer world. he is busy with himself
+- We basically see two type of concepts in Modular system
+  1. **Common Js** : The syntax is `require("express")`. Normally Used For Commonjs
+  2. **ESM Module** : Syntax is `import axios from "axios"`. Basically used in frontend application.
+
+![alt text](<WhatsApp Image 2025-05-28 at 22.59.03_40b5010b.jpg>)
+
+- In present days node.js we use `ESM` system in node.js as well
+
+![alt text](<WhatsApp Image 2025-05-28 at 23.04.26_f304e40e.jpg>)
+
+#### We can see three types ofd modules in modular system
+
+1. Local Module (We Create)
+2. Built In modules (come with node.js)
+3. Third Party Modules (Created By Others)
