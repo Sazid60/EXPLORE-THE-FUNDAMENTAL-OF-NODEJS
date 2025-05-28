@@ -392,3 +392,152 @@ All the steps are happening inside callback ques.
 - If we want to work in depth higher level of works we have to know the phases.
 
 ![alt text](<WhatsApp Image 2025-05-28 at 19.59.21_02718ca9.jpg>)
+
+## 12-7 Installation Of Node.js using Fnm
+
+#### Versioning Package.
+
+- We have to work in different version of node.js
+
+![alt text](<WhatsApp Image 2025-05-28 at 20.13.11_a6a4f69d.jpg>)
+
+- We have to switch to different versions according to the requirement so this is why we will us docker.
+- Using docker we do not install node.js in our machine we do this is a container.
+- Now install using fmn, without docker.
+
+### **Installation Process Of Node.js AccordingLy To Module**
+
+[Node Js Install](https://nodejs.org/en/download)
+
+1. Install Winget
+
+- Open Your Powershell Terminal as administrator and Install
+
+```
+   winget install Schniz.fnm
+```
+
+2. Check Th Fnm Version
+
+```
+fnm --version
+```
+
+3. set the env
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+- paste this path name. while finding the file remember to show hidden file
+
+```
+C:\Users\User\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe
+```
+
+1. Install version
+
+```
+fnm install 22
+```
+
+3. See the node version
+
+```
+node -v
+```
+
+- add another env for fnm same a previous process
+
+```
+C:\Users\User\AppData\Roaming\fnm\aliases\default
+```
+
+4. Install Updated version of node and switch to the version
+
+```
+fnm install 24
+```
+
+```
+fnm use 24
+```
+
+5. See the fnm version
+
+```
+fnm ls
+```
+
+6. Configure the FNM Env
+   [FNM ENV](https://github.com/Schniz/fnm)
+
+- Open Power shell Terminal and write this
+
+```
+if (-not (Test-Path $profile)) { New-Item $profile -Force }
+```
+
+- If there is no profile file for the powershell it will create
+
+- To open and edit the created profile file we will use
+
+```
+Invoke-Item $profile
+```
+
+![alt text](image-4.png)
+
+- inside the profile file paste this lines.
+
+```
+fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+```
+
+- This will add in powershell profile file
+
+### **Installation Process Of Node.js AccordingLy To Other Shortcut Method**
+
+1. **Install using Winget**:
+
+   ```
+   winget install Schniz.fnm
+   ```
+
+2. **Open Terminal as Administrator**:
+
+   - Search for "Terminal" in the Start menu.
+   - Right-click on it and select "Run as administrator".
+   - By default, it will start a PowerShell shell.
+
+3. **Allow PowerShell scripts**:
+
+   ```
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
+4. **Close Terminal**.
+
+5. **Start Terminal again** with a PowerShell shell.
+
+6. **Install the required Node version**:
+
+   ```
+   fnm install 22
+   ```
+
+7. **Use the required Node version**:
+
+   ```
+   fnm use 22
+   ```
+
+8. **Verify the Node version**:
+   ```
+   node -v
+   ```
+   This should now display the correct version.
