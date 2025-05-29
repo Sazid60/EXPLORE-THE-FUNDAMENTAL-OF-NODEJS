@@ -551,7 +551,7 @@ If node is unrecognizable then do the following:
 - Then press ctrl + S (or manually save it) and close the notepad. Close the Powershell as well.
 - Open powershell again and run node -v. It'd work.
 
-## Modular System Of Node.js
+## 12-8 Modular System Of Node.js
 
 - We build the structure of a website using HTML
 - We use Css to Beautify Our Website
@@ -598,3 +598,116 @@ If node is unrecognizable then do the following:
 1. Local Module (We Create)
 2. Built In modules (come with node.js)
 3. Third Party Modules (Created By Others)
+
+## 12-9 Explore Common Js Module
+
+#### Exploring Common js export import.
+
+- file-1.js
+
+```js
+const a = 10;
+
+module.exports = a;
+```
+
+- file-2.js
+
+```js
+const var1 = require("./file-1");
+console.log(var1);
+```
+
+- Remember here to run the file you have to go inside where the file is
+
+```
+cd Learning-Node
+node file1.js
+```
+
+#### Lets see what is inside module
+
+```js
+const a = 10;
+
+module.exports = a;
+
+console.log(module);
+```
+
+- Output
+
+```js
+{
+  id: '.',
+  path: 'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\Learning-Node',
+  exports: 10, //This is a object and replace by the value
+  filename: 'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\Learning-Node\\file-1.js',
+  loaded: false,
+  children: [],
+  paths: [
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\Learning-Node\\node_modules',
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\node_modules',
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\node_modules',
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\node_modules',
+    'D:\\WORK\\renew-level-2\\node_modules',
+    'D:\\WORK\\node_modules',
+    'D:\\node_modules'
+  ],
+  [Symbol(kIsMainSymbol)]: true,
+  [Symbol(kIsCachedByESMLoader)]: false,
+  [Symbol(kURL)]: undefined,
+  [Symbol(kFormat)]: undefined,
+  [Symbol(kIsExecuting)]: true
+}
+```
+
+- Here `exports = 10 ` is actually a object `{}` but its replaced by the variable we have wanted. If we create function it will be replaced by the function
+
+```js
+const a = 10;
+
+const add = (param1, param2) => param1 + param2;
+
+// this function will replace the object of the module
+
+// module.exports = a;
+
+module.exports = add;
+
+console.log(module);
+```
+
+- we can export multiple variable at a time, and the exports object will be replaced by `exports: { a: 10, add: [Function: add] },`
+- file-1.js
+
+```js
+const a = 10;
+const add = (param1, param2) => param1 + param2;
+// module.exports = a;
+// module.exports = add;
+module.exports = {
+  a,
+  add,
+};
+console.log(module);
+```
+
+- we can import the exported variable and function we can use.
+
+- file-2.js
+
+```js
+const var1 = require("./file-1");
+console.log(var1); // output: { a: 10, add: [Function: add] }
+console.log(var1.a);
+console.log(var1.add(2, 3));
+```
+
+- we can destructure the exports earlier
+
+```js
+const { a, add } = require("./file-1");
+console.log(a);
+console.log(add(2, 3));
+```
