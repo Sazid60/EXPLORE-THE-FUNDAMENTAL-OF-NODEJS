@@ -799,3 +799,234 @@ const { add, subtract } = require("./utils");
 console.log(add(3, 2));
 console.log(subtract(3, 2));
 ```
+
+## 12-11 IIFE a Module Wrapper
+
+![alt text](<WhatsApp Image 2025-05-29 at 09.54.58_f90fddb1.jpg>)
+
+- When we write js in browser then we get an access of a `window object`.
+- There are some default functions of js like ` setTimeOut(), getElementById(), fetch()` and etc. From where these functions are coming?
+- In browser we have a `global object/ window Object`. In global object all the property and the methods of js are stored. From the global object we are getting the functions and all.
+
+- In the same way node.js has a object named `global`. in here we stor all the functions methods and all coming with node.js are available.
+
+- Global gives us
+  1. setTimeout()
+  2. clearTimeOut()
+  3. setInterval()
+  4. clearInterval()
+  5. fetch()
+- In global we do not have `require` and `Module`. so how do we get these?
+- This is solved by node.js by using `IIFE`.
+
+#### What is IIFE?
+
+![alt text](<WhatsApp Image 2025-05-29 at 10.02.25_e9c008a1.jpg>)
+
+- Immediately Invoked Function Expression
+- It like we will write a function and call it immediately.
+- The advantage is the function has came to a block scope.
+- This system is used in node.js and this is why we are getting access of module and require.
+- Suppose We have a node.js file now we have to execute it.
+- Node.js will fist wrap the file using `IIFE` wrapper. and the its called immediately. Thr wrapper function contains all `exports`, `Require`, `Module`, `__fileName`,`__dirName`. We get all the things while doing the execution. and this is how we get these despite not being in global.
+
+![alt text](<WhatsApp Image 2025-05-29 at 10.27.44_149f09ba.jpg>)
+
+```js
+let a = 30; // this will not impact the value of a inside the function
+((name) => {
+  let a = 10; //block scope
+  console.log(`Learning ${name}`);
+})("node");
+
+console.log(a); // output = 30
+console.log(global);
+```
+
+- the global will console the output that it holds
+
+```js
+<ref *1> Object [global] {
+  global: [Circular *1],
+  clearImmediate: [Function: clearImmediate],
+  setImmediate: [Function: setImmediate] {
+    [Symbol(nodejs.util.promisify.custom)]: [Getter]
+  },
+  clearInterval: [Function: clearInterval],
+  clearTimeout: [Function: clearTimeout],
+  setInterval: [Function: setInterval],
+  setTimeout: [Function: setTimeout] {
+    [Symbol(nodejs.util.promisify.custom)]: [Getter]
+  },
+  queueMicrotask: [Function: queueMicrotask],
+  structuredClone: [Function: structuredClone],
+  atob: [Function: atob],
+  btoa: [Function: btoa],
+  performance: [Getter/Setter],
+  fetch: [Function: fetch],
+  navigator: [Getter],
+  crypto: [Getter]
+}
+```
+
+- here we can not get module export and others here.
+- if we console these
+
+```js
+console.log(module);
+console.log(__dirname);
+console.log(__filename);
+```
+
+- We will get output since node.js create IIFE Function and call the function immediately and passes the `exports`, `Require`, `Module`, `__fileName`,`__dirName`. for this reason despite not being in global object we get these. and this is how the file is speared individually and this is called modular system.
+
+```js
+{
+  id: '.',
+  path: 'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\Learning-Node',
+  exports: {},
+  filename: 'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\Learning-Node\\iife.js',
+  loaded: false,
+  children: [],
+  paths: [
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\Learning-Node\\node_modules',
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\\node_modules',
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\Be-An-Express-And-Mongoose-Master\\node_modules',
+    'D:\\WORK\\renew-level-2\\PH-MODULES\\node_modules',
+    'D:\\WORK\\renew-level-2\\node_modules',
+    'D:\\WORK\\node_modules',
+    'D:\\node_modules'
+  ],
+  [Symbol(kIsMainSymbol)]: true,
+  [Symbol(kIsCachedByESMLoader)]: false,
+  [Symbol(kURL)]: undefined,
+  [Symbol(kFormat)]: undefined,
+  [Symbol(kIsExecuting)]: true
+}
+
+D:\WORK\renew-level-2\PH-MODULES\Be-An-Express-And-Mongoose-Master\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\Learning-Node
+D:\WORK\renew-level-2\PH-MODULES\Be-An-Express-And-Mongoose-Master\EXPLORE-THE-FUNDAMENTAL-OF-NODEJS\Learning-Node\iife.js
+```
+
+## 12-12 ESM module and Summary
+
+- Initially the purpose of js was to bring interactivity (Dom manipulation) in website.
+- when we have started to use node.js and write js in server. that means now js have to handle logic in server and so many more. So there will be a lot of js files. We will must need a modular system.
+- Initially There were no modular system built in inside Javascript.
+- Node.js Brought the modular system and started to use `Common Js` system of js.
+- After node.js version 14 Node.js allowed us to use `ESM` Module. now we can import and export directly.
+
+#### Now Lets See The ESM Module system in practical.
+
+- ESM Files extension is `.mjs`.
+- we can not use `Module.export = {}` and `Require` in mjs file we have to use `export{}` and `import` here. these are named export
+- console.log(module) we will not get any module here since IIFE is not present here.
+- in import we have to say directly with the file extension .mjs
+
+```js
+import var1 from "./file-1.mjs";
+```
+
+- we can do name aliasing here.
+
+```js
+import { a as A3, b as B3, add as Add3 } from "./file-3.mjs";
+```
+
+#### Now Lets See Default Exports
+
+```js
+export default add;
+```
+
+- The facility of default export is we can import them in any name.
+
+```js
+import add from "./file-1.mjs";
+console.log(add(2, 3));
+```
+
+- lets rename. and for renaming we do not need `as` for this. we can give any name.
+
+```js
+import addKoro from "./file-1.mjs";
+console.log(addKoro(2, 3));
+```
+
+- file-1.mjs
+
+```js
+const a = 10;
+const add = (param1, param2) => param1 + param2;
+export { a };
+
+export default add;
+```
+
+- file-3.mjs
+
+```js
+const a = 10;
+const add = (param1, param2, param3) => param1 + param2 + param3;
+const b = 40;
+export { a, b, add };
+```
+
+- file-2.mjs
+
+```js
+// const var1 = require("./file-1")
+// const { a, add } = require("./file-1")
+
+import { a } from "./file-1.mjs";
+// import add from "./file-1.mjs"
+import addKoro from "./file-1.mjs"; // renamed
+import { a as A3, b as B3, add as Add3 } from "./file-3.mjs";
+console.log(a);
+console.log(addKoro(2, 3));
+console.log(A3);
+console.log(Add3(2, 3, 6));
+console.log(B3);
+```
+
+- the problem is we can just export one as default. can do this `export{}` as well but we have to use dot notation to access.
+
+```js
+export default add;
+```
+
+- lets see
+  export
+
+```js
+const a = 10;
+const add = (param1, param2) => param1 + param2;
+const c = 50;
+export { a };
+export default {
+  add,
+  c,
+};
+```
+
+- import
+
+```js
+// const var1 = require("./file-1")
+// const { a, add } = require("./file-1")
+
+import { a } from "./file-1.mjs";
+import addKoro from "./file-1.mjs";
+console.log(a);
+console.log(addKoro.add(2, 3));
+console.log(addKoro.c);
+```
+
+- we do not do that. in default export we just send single function like
+
+```js
+export default add;
+```
+
+- basically we use this in react.
+- so in a nut shell in case of named export we have to keep the name same in import export but in default export we can give any name.
