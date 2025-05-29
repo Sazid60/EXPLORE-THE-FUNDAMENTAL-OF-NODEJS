@@ -711,3 +711,91 @@ const { a, add } = require("./file-1");
 console.log(a);
 console.log(add(2, 3));
 ```
+
+## 12-10 Name exports, name aliasing & index export
+
+- we have to rename the variable for avoiding similar name conflict
+
+```js
+const { a, add } = require("./file-1");
+
+const { a: a3, add: add3, b: b3 } = require("./file-3"); // renamed the variables for naming conflict.
+
+console.log(a3);
+console.log(add3(2, 3, 6));
+console.log(b3);
+```
+
+- Another Method for avoiding naming conflict can be not using destructuring.
+
+```js
+const var1 = require("./file-1");
+const { a, add: add3, b } = require("./file-3");
+
+console.log(var1.a);
+console.log(var1.add(2, 3));
+
+console.log(a);
+console.log(add3(2, 3, 6));
+console.log(b);
+```
+
+- suppose we have many utility functions and we want to use them now.
+
+- utils/add.js
+
+```js
+const add = (param1, param2) => param1 + param2;
+module.exports = {
+  add,
+};
+```
+
+- utils/subtract.js
+
+```js
+const subtract = (param1, param2) => param1 - param2;
+
+module.exports = {
+  subtract,
+};
+```
+
+- main.js
+
+```js
+const { add } = require("./utils/add");
+
+const { subtract } = require("./utils/subtract");
+console.log(add(3, 2));
+console.log(subtract(3, 2));
+```
+
+- we are requiring each and every utils we want. if there are a lot fo utils there will be a lot of require like `const { add } = require("./utils/add")`
+- We can solve this making a index.js file inside the utils and import all in the index file.
+- utils/index.js
+
+```js
+const { add } = require("./add");
+
+const { subtract } = require("./subtract");
+
+module.exports = {
+  add,
+  subtract,
+};
+```
+
+- now we can use them in more cleaner way
+
+- main.js
+
+```js
+// const { add, subtract } = require("./utils/index");
+
+const { add, subtract } = require("./utils");
+//  this will also work since if we do not mention specific file name it will grab the index file by default.
+
+console.log(add(3, 2));
+console.log(subtract(3, 2));
+```
